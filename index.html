@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>College Room Booking</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* small extra styles */
+    .room-card { transition: transform .12s, box-shadow .12s }
+    .room-card:hover { transform: translateY(-6px); box-shadow: 0 8px 24px rgba(0,0,0,0.08) }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white shadow-sm">
+    <div class="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold">C</div>
+        <div>
+          <h1 class="text-lg font-semibold">CampusRoom</h1>
+          <p class="text-sm text-gray-500">College room & lab booking</p>
+        </div>
+      </div>
+      <nav class="flex items-center gap-4">
+        <button id="myBookingsBtn" class="text-sm px-3 py-1 rounded hover:bg-gray-100">My bookings</button>
+        <button id="adminToggle" class="text-sm px-3 py-1 rounded bg-indigo-600 text-white">Admin</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-6 py-8">
+    <!-- Hero -->
+    <section class="bg-white rounded-lg p-6 mb-6 shadow-sm">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold">Book classrooms, labs and seminar halls</h2>
+          <p class="text-gray-600 mt-2">Quickly search rooms, check availability and reserve for classes, events or study groups.</p>
+        </div>
+        <div class="flex gap-3">
+          <input id="search" type="search" placeholder="Search by room name or feature" class="border rounded px-3 py-2 w-64" />
+          <select id="filterBuilding" class="border rounded px-3 py-2">
+            <option value="">All buildings</option>
+          </select>
+          <button id="newBookingBtn" class="bg-indigo-600 text-white px-4 py-2 rounded">New booking</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rooms grid -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6" id="roomsGrid">
+      <!-- Room cards added by JS -->
+    </section>
+
+    <!-- Calendar / Day view -->
+    <section class="mt-8 bg-white rounded-lg p-6 shadow-sm">
+      <h3 class="font-semibold mb-4">Today's schedule</h3>
+      <div id="scheduleList" class="space-y-2 text-sm text-gray-700">
+        <!-- bookings list populated by JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-lg w-full max-w-xl p-6">
+      <div class="flex justify-between items-center">
+        <h4 class="text-lg font-semibold">New Booking</h4>
+        <button id="closeModal" class="text-gray-500">✕</button>
+      </div>
+      <form id="bookingForm" class="mt-4 space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <label class="flex flex-col"><span class="text-sm text-gray-600">Room</span>
+            <select id="roomSelect" required class="border rounded px-3 py-2"></select>
+          </label>
+          <label class="flex flex-col"><span class="text-sm text-gray-600">Booked by (name)</span>
+            <input id="bookedBy" required class="border rounded px-3 py-2" />
+          </label>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <label class="flex flex-col"><span class="text-sm text-gray-600">Date</span>
+            <input id="date" type="date" required class="border rounded px-3 py-2" />
+          </label>
+          <div class="flex gap-3">
+            <label class="flex-1 flex flex-col"><span class="text-sm text-gray-600">Start time</span>
+              <input id="startTime" type="time" required class="border rounded px-3 py-2" />
+            </label>
+            <label class="flex-1 flex flex-col"><span class="text-sm text-gray-600">End time</span>
+              <input id="endTime" type="time" required class="border rounded px-3 py-2" />
+            </label>
+          </div>
+        </div>
+        <label class="flex flex-col"><span class="text-sm text-gray-600">Purpose / Notes</span>
+          <input id="notes" class="border rounded px-3 py-2" />
+        </label>
+        <div class="flex items-center justify-end gap-3 mt-2">
+          <button type="button" id="cancelBtn" class="px-4 py-2 rounded border">Cancel</button>
+          <button class="px-4 py-2 rounded bg-indigo-600 text-white">Confirm booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- My Bookings Panel -->
+  <div id="myBookingsPanel" class="fixed right-4 top-20 bg-white rounded-lg shadow p-4 w-96 hidden">
+    <h4 class="font-semibold mb-2">My bookings</h4>
+    <div id="myBookingsList" class="space-y-2 text-sm text-gray-700 max-h-64 overflow-auto"></div>
+    <div class="mt-3 text-right">
+      <button id="closeMyBookings" class="text-sm text-gray-600">Close</button>
+    </div>
+  </div>
+
+  <!-- Simple Admin Panel -->
+  <div id="adminPanel" class="fixed left-4 top-20 bg-white rounded-lg shadow p-4 w-80 hidden">
+    <h4 class="font-semibold mb-2">Admin — Rooms</h4>
+    <div id="adminRooms" class="space-y-2 text-sm text-gray-700"></div>
+    <div class="mt-3">
+      <button id="addRoomBtn" class="px-3 py-1 border rounded text-sm">Add sample room</button>
+    </div>
+  </div>
+
+  <footer class="mt-12 text-center text-sm text-gray-500 pb-8">Built for colleges • Demo only • Data stored locally</footer>
+
+  <script>
+    // Sample dataset — you can replace with server API
+    const rooms = [
+      { id: 'R101', name: 'Lecture Hall 101', building: 'Main Block', capacity: 120, features: ['Projector','Mic'] },
+      { id: 'LAB-A', name: 'Computer Lab A', building: 'Tech Block', capacity: 30, features: ['PCs','Whiteboard'] },
+      { id: 'SEM-1', name: 'Seminar Room 1', building: 'Admin Block', capacity: 40, features: ['TV','Video'] }
+    ];
+
+    // bookings stored in localStorage under 'campus_bookings'
+    function loadBookings(){
+      return JSON.parse(localStorage.getItem('campus_bookings')||'[]');
+    }
+    function saveBookings(b){ localStorage.setItem('campus_bookings', JSON.stringify(b)); }
+
+    // Utilities
+    function formatTime(t){ return t; }
+
+    // render rooms
+    const roomsGrid = document.getElementById('roomsGrid');
+    const filterBuilding = document.getElementById('filterBuilding');
+    const search = document.getElementById('search');
+
+    function populateBuildingFilter(){
+      const buildings = [...new Set(rooms.map(r=>r.building))];
+      buildings.forEach(b=>{ const opt=document.createElement('option'); opt.value=b; opt.textContent=b; filterBuilding.appendChild(opt); });
+    }
+
+    function renderRooms(){
+      roomsGrid.innerHTML='';
+      const q=search.value.toLowerCase();
+      const b=filterBuilding.value;
+      rooms.filter(r=> (r.name.toLowerCase().includes(q) || r.id.toLowerCase().includes(q) || r.features.join(' ').toLowerCase().includes(q)) && (!b || r.building===b))
+        .forEach(r=>{
+          const card = document.createElement('article');
+          card.className='room-card bg-white rounded-lg p-4 shadow-sm';
+          card.innerHTML = `
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="font-semibold">${r.name}</h4>
+                <div class="text-xs text-gray-500">${r.id} • ${r.building}</div>
+                <div class="text-sm text-gray-600 mt-2">Capacity: ${r.capacity}</div>
+                <div class="text-xs text-gray-500 mt-2">Features: ${r.features.join(', ')}</div>
+              </div>
+              <div class="flex flex-col items-end gap-2">
+                <button class="bookNowBtn bg-indigo-600 text-white px-3 py-1 rounded text-sm" data-id="${r.id}">Book</button>
+                <button class="viewBtn border px-3 py-1 rounded text-sm" data-id="${r.id}">View</button>
+              </div>
+            </div>
+          `;
+          roomsGrid.appendChild(card);
+        });
+    }
+
+    // populate selectors
+    function populateRoomSelect(){
+      const sel = document.getElementById('roomSelect'); sel.innerHTML='';
+      rooms.forEach(r=>{ const o=document.createElement('option'); o.value=r.id; o.textContent = `${r.name} — ${r.id}`; sel.appendChild(o); });
+    }
+
+    populateBuildingFilter(); renderRooms(); populateRoomSelect(); renderSchedule(); renderAdminRooms();
+
+    // booking modal behavior
+    const bookingModal = document.getElementById('bookingModal');
+    document.getElementById('newBookingBtn').addEventListener('click',()=>{ bookingModal.classList.remove('hidden'); bookingModal.classList.add('flex'); });
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('cancelBtn').addEventListener('click', closeModal);
+    function closeModal(){ bookingModal.classList.add('hidden'); bookingModal.classList.remove('flex'); }
+
+    // Book button from cards
+    document.body.addEventListener('click', e=>{
+      if(e.target.matches('.bookNowBtn')){
+        const id=e.target.dataset.id; document.getElementById('roomSelect').value=id; bookingModal.classList.remove('hidden'); bookingModal.classList.add('flex');
+      }
+      if(e.target.matches('.viewBtn')){
+        const id=e.target.dataset.id; showRoomBookings(id);
+      }
+    });
+
+    // handle form submit
+    document.getElementById('bookingForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const roomId = document.getElementById('roomSelect').value;
+      const date = document.getElementById('date').value;
+      const start = document.getElementById('startTime').value;
+      const end = document.getElementById('endTime').value;
+      const by = document.getElementById('bookedBy').value;
+      const notes = document.getElementById('notes').value;
+
+      if(!(date && start && end && by)) { alert('Please fill required fields'); return; }
+      if(end <= start){ alert('End time must be after start time'); return; }
+
+      // simple overlap check
+      const bookings = loadBookings();
+      const conflict = bookings.find(b=> b.roomId===roomId && b.date===date && !(end<=b.start || start>=b.end));
+      if(conflict){ alert('Time conflict — room already booked for this slot.'); return; }
+
+      bookings.push({ id: 'bk_' + Date.now(), roomId, date, start, end, by, notes });
+      saveBookings(bookings);
+      closeModal(); renderSchedule(); renderRooms();
+      alert('Booking confirmed');
+    });
+
+    // schedule renderer
+    function renderSchedule(){
+      const list = document.getElementById('scheduleList'); list.innerHTML='';
+      const bookings = loadBookings().sort((a,b)=> (a.date+b.start).localeCompare(b.date+a.start));
+      if(bookings.length===0){ list.innerHTML='<div class="text-gray-500">No bookings yet.</div>'; return; }
+      bookings.forEach(b=>{
+        const r = rooms.find(x=>x.id===b.roomId) || {name:b.roomId};
+        const el = document.createElement('div');
+        el.className='flex items-center justify-between border rounded p-2';
+        el.innerHTML = `<div><div class="font-medium">${r.name}</div><div class="text-xs text-gray-500">${b.date} • ${b.start} - ${b.end} • ${b.by}</div></div><div class="text-xs text-gray-500">${b.notes||''}</div>`;
+        list.appendChild(el);
+      });
+      renderMyBookings();
+    }
+
+    // my bookings panel
+    document.getElementById('myBookingsBtn').addEventListener('click', ()=>{ document.getElementById('myBookingsPanel').classList.remove('hidden'); });
+    document.getElementById('closeMyBookings').addEventListener('click', ()=>{ document.getElementById('myBookingsPanel').classList.add('hidden'); });
+
+    function renderMyBookings(){
+      const myList = document.getElementById('myBookingsList'); myList.innerHTML='';
+      const bookings = loadBookings();
+      bookings.forEach(b=>{
+        const r = rooms.find(x=>x.id===b.roomId) || {name:b.roomId};
+        const el = document.createElement('div');
+        el.className='border rounded p-2 flex items-start justify-between';
+        el.innerHTML = `<div><div class="font-medium">${r.name}</div><div class="text-xs text-gray-500">${b.date} • ${b.start}-${b.end}</div></div><div><button class="cancelBookingBtn text-xs text-red-600" data-id="${b.id}">Cancel</button></div>`;
+        myList.appendChild(el);
+      });
+    }
+
+    // cancel booking
+    document.body.addEventListener('click', e=>{
+      if(e.target.matches('.cancelBookingBtn')){
+        const id=e.target.dataset.id;
+        const b = loadBookings().filter(x=>x.id!==id);
+        saveBookings(b); renderSchedule(); renderMyBookings();
+      }
+    });
+
+    // show bookings for a single room (simple alert for demo)
+    function showRoomBookings(roomId){
+      const bookings = loadBookings().filter(b=>b.roomId===roomId);
+      if(bookings.length===0) return alert('No bookings for this room');
+      const lines = bookings.map(b=>`${b.date} ${b.start}-${b.end} • ${b.by}`).join('\n');
+      alert('Bookings for '+roomId+'\n\n'+lines);
+    }
+
+    // Admin toggle
+    const adminPanel = document.getElementById('adminPanel');
+    document.getElementById('adminToggle').addEventListener('click', ()=>{ adminPanel.classList.toggle('hidden'); renderAdminRooms(); });
+    function renderAdminRooms(){
+      const el = document.getElementById('adminRooms'); el.innerHTML='';
+      rooms.forEach(r=>{ const d=document.createElement('div'); d.className='flex items-center justify-between'; d.innerHTML = `<div><div class="font-medium">${r.name}</div><div class="text-xs text-gray-500">${r.id} • ${r.building}</div></div><div><button class="text-xs removeRoomBtn text-red-600" data-id="${r.id}">Remove</button></div>`; el.appendChild(d); });
+    }
+    document.getElementById('addRoomBtn').addEventListener('click', ()=>{ rooms.push({id:'R'+Math.floor(Math.random()*900+100), name:'New Room', building:'New Building', capacity:20, features:[]}); populateRoomSelect(); renderRooms(); renderAdminRooms(); });
+    document.body.addEventListener('click', e=>{ if(e.target.matches('.removeRoomBtn')){ const id=e.target.dataset.id; const idx = rooms.findIndex(r=>r.id===id); if(idx>-1) rooms.splice(idx,1); populateRoomSelect(); renderRooms(); renderAdminRooms(); } });
+
+    // search/filter live
+    search.addEventListener('input', renderRooms); filterBuilding.addEventListener('change', renderRooms);
+
+    // show bookings for today's date by default
+    function todayISO(){ const d=new Date(); return d.toISOString().slice(0,10); }
+    document.getElementById('date').value = todayISO();
+
+    // initialize my bookings render
+    renderMyBookings();
+
+    // small helper: show bookings on page load
+    document.addEventListener('DOMContentLoaded', ()=>{ renderSchedule(); });
+  </script>
+</body>
+</html>

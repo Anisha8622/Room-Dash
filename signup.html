@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoomDash – Sign Up</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"Poppins",sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      background:#15181b;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .login-wrapper{
+      width:900px;
+      max-width:95vw;
+      min-height:520px;
+      background:#ffffff;
+      border-radius:26px;
+      display:flex;
+      overflow:hidden;
+      box-shadow:0 26px 60px rgba(0,0,0,0.55);
+    }
+
+    .login-left{
+      width:42%;
+      background:linear-gradient(180deg,#d02e7c,#8a1454);
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .left-pill{
+      position:absolute;
+      right:-55px;
+      top:38%;
+      transform:translateY(-50%);
+      width:190px;
+      height:76px;
+      background:#ffffff;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:600;
+      font-size:15px;
+      letter-spacing:0.05em;
+      box-shadow:0 14px 30px rgba(0,0,0,0.35);
+    }
+
+    .login-right{
+      width:58%;
+      background:#ffffff;
+      padding:40px 70px 34px;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      align-items:stretch;
+    }
+
+    .logo-box{
+      text-align:center;
+      margin-bottom:20px;
+    }
+    .logo-box img{
+      height:40px;
+      object-fit:contain;
+    }
+
+    form{width:100%;}
+
+    .field-group{
+      margin-bottom:18px;
+    }
+    .field-group label{
+      font-size:13px;
+      font-weight:500;
+      color:#444;
+      display:block;
+      margin-bottom:4px;
+    }
+    .field{
+      display:flex;
+      align-items:center;
+      border-bottom:1px solid #dddddd;
+      padding:6px 0 8px;
+    }
+    .field-icon{
+      font-size:17px;
+      margin-right:10px;
+      color:#777;
+    }
+    .field input{
+      flex:1;
+      border:none;
+      outline:none;
+      font-size:14px;
+      color:#222;
+      background:transparent;
+    }
+
+    .btn-row{
+      text-align:center;
+      margin:20px 0 24px;
+    }
+    .main-login-btn{
+      display:inline-block;
+      min-width:170px;
+      padding:13px 0;
+      border:none;
+      outline:none;
+      border-radius:999px;
+      background:linear-gradient(135deg,#d02e7c,#8a1454);
+      color:#fff;
+      font-weight:600;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow:0 12px 26px rgba(90,0,40,0.6);
+    }
+    .main-login-btn:hover{
+      filter:brightness(1.05);
+    }
+
+    .or-text{
+      text-align:center;
+      font-size:13px;
+      color:#555;
+      margin-bottom:12px;
+    }
+
+    .social-row{
+      display:flex;
+      justify-content:center;
+      gap:16px;
+    }
+    .social-btn{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:8px;
+      background:#f7f7f7;
+      border:1px solid #e4e4e4;
+      font-size:13px;
+      color:#444;
+      cursor:pointer;
+      text-decoration:none;
+      min-width:130px;
+      justify-content:center;
+    }
+    .social-btn img{
+      width:18px;
+      height:18px;
+      object-fit:contain;
+    }
+    .social-btn:hover{
+      background:#eeeeee;
+    }
+
+    @media (max-width:780px){
+      .login-wrapper{
+        flex-direction:column;
+        height:auto;
+      }
+      .login-left{
+        width:100%;
+        height:160px;
+      }
+      .left-pill{
+        top:100%;
+        right:50%;
+        transform:translate(50%,-50%);
+      }
+      .login-right{
+        width:100%;
+        padding:40px 28px 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+  <!-- LEFT PANEL -->
+  <div class="login-left">
+    <div class="left-pill">SIGN UP</div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="login-right">
+    <div class="logo-box">
+      <img src="logo.png" alt="ROOMDASH">
+    </div>
+
+    <form id="signupForm">
+      <!-- Name -->
+      <div class="field-group">
+        <label for="name">Name</label>
+        <div class="field">
+          <span class="field-icon">&#128100;</span>
+          <input type="text" id="name" placeholder="Your Name" required>
+        </div>
+      </div>
+
+      <!-- Designation -->
+      <div class="field-group">
+        <label for="designation">Designation</label>
+        <div class="field">
+          <span class="field-icon">&#128188;</span>
+          <input type="text" id="designation" placeholder="Student / Class Rep / Teacher / Core" required>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="field-group">
+        <label for="email">Email</label>
+        <div class="field">
+          <span class="field-icon">&#9993;</span>
+          <input type="email" id="email" placeholder="Email" required>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="field-group">
+        <label for="password">Password</label>
+        <div class="field">
+          <span class="field-icon">&#128274;</span>
+          <input type="password" id="password" placeholder="Password" required>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="submit" class="main-login-btn">SIGN UP</button>
+      </div>
+
+      <div class="or-text">Or Sign up with</div>
+
+      <div class="social-row">
+        <a class="social-btn" href="https://accounts.google.com/signup" target="_blank">
+          <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google">
+          Google
+        </a>
+        <a class="social-btn" href="https://www.facebook.com/r.php" target="_blank">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
+          Facebook
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- SheetJS for Excel export -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<script>
+  const USERS_KEY = 'roomdash_users_v1';
+  const LOGGED_IN_KEY = 'roomdash_logged_in_user';
+
+  function loadUsers(){
+    try{
+      return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+    }catch(e){
+      return [];
+    }
+  }
+  function saveUsers(users){
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+
+  // 🔹 Export all users from localStorage to an Excel file
+  function exportUsersToExcel(users){
+    if(!users || users.length === 0){
+      return; // nothing to export yet
+    }
+
+    // only include safe fields (no password in the Excel)
+    const rows = users.map(u => ({
+      Name: u.name || "",
+      Designation: u.designation || "",
+      Email: u.email || "",
+      CreatedAt: u.createdAt || ""
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Users");
+
+    // This will trigger a download: roomdash_users.xlsx
+    XLSX.writeFile(wb, "roomdash_users.xlsx");
+  }
+
+  document.getElementById('signupForm').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const designation = document.getElementById('designation').value.trim();
+    const emailRaw = document.getElementById('email').value.trim();
+    const pass = document.getElementById('password').value.trim();
+
+    if(!name || !designation || !emailRaw || !pass){
+      alert("Please fill all the details.");
+      return;
+    }
+
+    const email = emailRaw.toLowerCase();
+    const users = loadUsers();
+
+    const existing = users.find(u => u.email === email);
+    if(existing){
+      alert("An account with this email already exists. Please sign in.");
+      window.location.href = "signin.html";
+      return;
+    }
+
+    // push new user (password kept only in localStorage, NOT in Excel)
+    users.push({
+      name,
+      designation,
+      email,
+      password: pass,
+      createdAt: new Date().toISOString()
+    });
+    saveUsers(users);
+
+    // store user info for greeting on abc.html
+    localStorage.setItem(LOGGED_IN_KEY, email);
+    localStorage.setItem('roomdash_user_name', name);
+
+    // 🔹 Export all users to an Excel file (downloads automatically)
+    exportUsersToExcel(users);
+
+    // go to home page
+    window.location.href = "abc.html";
+  });
+</script>
+
+</body>
+</html>

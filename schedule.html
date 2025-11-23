@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ROOMDASH • Schedule</title>
+  <style>
+    :root{
+      --accent:#BA0303;
+      --bg:#f7f9fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+    }
+    *{box-sizing:border-box}
+
+    body{
+      font-family:Arial,Helvetica,sans-serif;
+      margin:0;
+      background:var(--bg);
+      color:#0f172a;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+    }
+
+    /* ===== HEADER ===== */
+    header{
+      background:#fff;
+      border-bottom:1px solid #e5e7eb;
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+
+    .nav{
+      max-width:1200px;
+      margin:0 auto;
+      padding:10px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand img{
+      width:140px;
+      height:34px;
+      object-fit:contain;
+    }
+
+    .brand-title{
+      font-weight:700;
+    }
+
+    /* Home button styled like Schedule button from Booking (red pill) */
+    .home-btn{
+      display:inline-block;
+      padding:8px 18px;
+      border-radius:999px;
+      background:#BA0303;
+      color:#fff;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:600;
+      border:none;
+      box-shadow:0 6px 16px rgba(186,3,3,0.35);
+    }
+    .home-btn:hover{
+      background:#940202;
+    }
+
+    /* ===== MAIN ===== */
+    .container{
+      max-width:1100px;
+      margin:20px auto;
+      padding:0 18px 24px;
+      flex:1;
+    }
+
+    /* Back to Booking at very left of content section */
+    .back-btn{
+      display:inline-block;
+      text-decoration:none;
+      background:#BA0303;
+      color:#fff;
+      padding:8px 16px;
+      border-radius:8px;
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:12px;
+    }
+    .back-btn:hover{
+      background:#940202;
+    }
+
+    .controls{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      background:#BA0303;
+      color:#fff;
+      padding:8px 12px;
+      border-radius:8px;
+      border:none;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .btn.ghost{
+      background:#fff;
+      border:1px solid #e5e7eb;
+      color:#BA0303;
+    }
+
+    .week{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:10px;
+    }
+
+    .day{
+      background:var(--card);
+      border-radius:8px;
+      padding:10px;
+      min-height:120px;
+      box-shadow:0 6px 18px rgba(15,23,42,0.04);
+      border-top:3px solid #e5e7eb;
+    }
+
+    .entry{
+      padding:8px;
+      border-radius:8px;
+      margin-top:8px;
+      border-left:4px solid #BA0303;
+      cursor:pointer;
+      background:#f9fafb;
+    }
+
+    .small{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .all-bookings{
+      margin-top:16px;
+    }
+
+    select,
+    #searchInput{
+      padding:6px;
+      border-radius:6px;
+      border:1px solid #e5e7eb;
+      font-size:13px;
+    }
+
+    /* ===== FOOTER (same style as Booking/Contact, but no logo) ===== */
+    .site-footer{
+      background:#111827;
+      color:#e5e7eb;
+      padding:16px 18px;
+    }
+
+    .footer-inner{
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      text-align:center;
+      font-size:13px;
+    }
+
+    .footer-nav,
+    .footer-social{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .footer-nav a,
+    .footer-social a{
+      color:#e5e7eb;
+      text-decoration:none;
+    }
+
+    .footer-nav a:hover,
+    .footer-social a:hover{
+      text-decoration:underline;
+    }
+
+    @media (max-width:900px){
+      .week{grid-template-columns:repeat(2,1fr);}
+      .controls{align-items:flex-start;}
+    }
+
+    @media (max-width:600px){
+      .week{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <a href="abc.html"><img src="logo.png" alt="ROOMDASH"></a>
+        <div>
+          <div class="brand-title">Room Schedule</div>
+          <div class="small">View week's bookings • click to cancel</div>
+        </div>
+      </div>
+      <!-- Home button styled like Schedule button from Booking.html -->
+      <a href="abc.html" class="home-btn">Home</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Back to Booking at left corner of page content -->
+    <a href="Booking.html" class="back-btn">Back to Booking</a>
+
+    <!-- Date + filter controls -->
+    <div class="controls">
+      <button id="prevWeek" class="btn ghost">◀ Prev</button>
+      <div id="weekLabel" class="small"></div>
+      <button id="nextWeek" class="btn ghost">Next ▶</button>
+
+      <div style="flex:1"></div>
+
+      <div class="small">Filter:</div>
+      <select id="filterLab">
+        <option value="all">All areas</option>
+      </select>
+      <input id="searchInput" placeholder="Search name or email" />
+    </div>
+
+    <div class="week" id="weekGrid"></div>
+
+    <div class="all-bookings">
+      <h4>All bookings</h4>
+      <div id="allBookings" class="small">No bookings yet</div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-nav">
+        <a href="abc.html">Home</a>
+        <a href="abc.html#features">Features</a>
+        <a href="Booking.html">Booking</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="contactus.html">Contact</a>
+      </div>
+
+      <div class="footer-social">
+        <a href="https://www.instagram.com/nmamit_nitte/" target="_blank">Instagram</a>
+        <a href="https://www.facebook.com/NMAMITsince1986/" target="_blank">Facebook</a>
+        <a href="https://x.com/nmamitnitte" target="_blank">Threads</a>
+        <a href="https://www.youtube.com/@NMAMInstituteofTechnology" target="_blank">Youtube</a>
+        <a href="https://www.linkedin.com/school/nmam-institute-of-technology/posts/?feedView=all" target="_blank">Linkedin</a>
+      </div>
+
+      <div>© 2025 ROOMDASH</div>
+    </div>
+  </footer>
+
+<script>
+  // areas must match Booking.html
+  const labs = [
+    { id:'labs', name:'Labs' },
+    { id:'seminars', name:'Seminar Halls' },
+    { id:'classes', name:'Classes' }
+  ];
+
+  const BOOK_KEY = 'labBooking_bookings_v1';
+  function load(){ try{ return JSON.parse(localStorage.getItem(BOOK_KEY) || '[]') }catch(e){ return [] } }
+  function save(b){ localStorage.setItem(BOOK_KEY, JSON.stringify(b)) }
+
+  // populate filter select
+  const filterSel = document.getElementById('filterLab');
+  filterSel.innerHTML = '<option value="all">All areas</option>' +
+    labs.map(l=>`<option value="${l.id}">${l.name}</option>`).join('');
+
+  // week helpers
+  function startOfWeek(date){
+    const d=new Date(date);
+    const day=d.getDay();
+    const diff=d.getDate()-day + (day===0? -6:1);
+    const monday=new Date(d.setDate(diff));
+    monday.setHours(0,0,0,0);
+    return monday;
+  }
+  function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x }
+  function fmt(d){ const dd=new Date(d); return dd.toISOString().slice(0,10) }
+
+  let weekStart = startOfWeek(new Date());
+
+  function labNameFor(id){
+    const l = labs.find(x=>x.id===id);
+    return l ? l.name : id;
+  }
+
+  function renderWeek(){
+    const grid = document.getElementById('weekGrid');
+    grid.innerHTML='';
+    document.getElementById('weekLabel').textContent =
+      new Date(weekStart).toLocaleDateString() + ' — ' +
+      new Date(addDays(weekStart,6)).toLocaleDateString();
+
+    const bookings = load();
+    const filter = filterSel.value;
+    const search = document.getElementById('searchInput').value.trim().toLowerCase();
+
+    for(let i=0;i<7;i++){
+      const day = addDays(weekStart,i);
+      const dateStr = fmt(day);
+
+      const col = document.createElement('div');
+      col.className='day';
+      col.innerHTML =
+        `<div style="font-weight:700">${day.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})}</div>`;
+
+      const items = bookings
+        .filter(b => b.date===dateStr && (filter==='all' || b.areaId===filter))
+        .filter(b => (b.name + b.email).toLowerCase().includes(search))
+        .sort((a,b) => a.start.localeCompare(b.start));
+
+      if(items.length===0){
+        const p = document.createElement('div');
+        p.className='small';
+        p.textContent='—';
+        col.appendChild(p);
+      } else {
+        items.forEach(it=>{
+          const e = document.createElement('div');
+          e.className='entry';
+          e.innerHTML =
+            `<strong>${it.name}</strong>
+             <div class="small">${it.start} - ${it.end} • ${labNameFor(it.areaId)} • ${it.roomId}</div>`;
+          e.addEventListener('click', ()=> {
+            if(!confirm('Cancel this booking?')) return;
+            const all = load().filter(x=>x.id!==it.id);
+            save(all);
+            renderWeek();
+            renderAllBookings();
+          });
+          col.appendChild(e);
+        });
+      }
+      grid.appendChild(col);
+    }
+  }
+
+  function renderAllBookings(){
+    const el = document.getElementById('allBookings');
+    const bookings = load();
+    if(bookings.length===0){
+      el.innerHTML='No bookings yet.';
+      return;
+    }
+    el.innerHTML='';
+    const filter = filterSel.value;
+    const search = document.getElementById('searchInput').value.trim().toLowerCase();
+
+    bookings.slice()
+      .filter(b => (filter==='all' || b.areaId===filter))
+      .filter(b => (b.name+b.email).toLowerCase().includes(search))
+      .sort((a,b)=> (a.date+a.start).localeCompare(b.date+b.start))
+      .forEach(b=>{
+        const d = document.createElement('div');
+        d.style.display='flex';
+        d.style.justifyContent='space-between';
+        d.style.padding='8px';
+        d.style.border='1px dashed #e5e7eb';
+        d.style.marginTop='8px';
+        d.innerHTML =
+          `<div>
+             <strong>${b.name}</strong>
+             <div class="small">${b.date} • ${b.start}-${b.end} • ${labNameFor(b.areaId)} • ${b.roomId}</div>
+           </div>
+           <div style="display:flex;flex-direction:column;gap:6px">
+             <button class="btn ghost" data-cancel="${b.id}">Cancel</button>
+           </div>`;
+        el.appendChild(d);
+      });
+
+    document.querySelectorAll('[data-cancel]').forEach(btn =>
+      btn.addEventListener('click', e => {
+        if(!confirm('Cancel booking?')) return;
+        const id = e.target.dataset.cancel;
+        const remaining = load().filter(x => x.id !== id);
+        save(remaining);
+        renderWeek();
+        renderAllBookings();
+      })
+    );
+  }
+
+  document.getElementById('prevWeek').addEventListener('click', ()=>{
+    weekStart = addDays(weekStart,-7);
+    renderWeek();
+  });
+  document.getElementById('nextWeek').addEventListener('click', ()=>{
+    weekStart = addDays(weekStart,7);
+    renderWeek();
+  });
+
+  filterSel.addEventListener('change', ()=>{ renderWeek(); renderAllBookings(); });
+  document.getElementById('searchInput').addEventListener('input', ()=>{ renderWeek(); renderAllBookings(); });
+
+  // initial
+  renderWeek();
+  renderAllBookings();
+</script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ROOMDASH • Booking</title>
+  <style>
+    :root{--accent:#BA0303;--bg:#f7f9fb;--card:#fff;--muted:#6b7280}
+    *{box-sizing:border-box}
+
+    html, body{
+      height:100%;
+    }
+
+    body{
+      font-family:Arial,Helvetica,sans-serif;
+      margin:0;
+      background:var(--bg);
+      color:#0f172a;
+      display:flex;
+      flex-direction:column; /* so footer can stick to bottom */
+    }
+
+    /* HEADER */
+    header{
+      background:#fff;
+      border-bottom:1px solid #e6e9ef;
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .nav{
+      max-width:1200px;
+      margin:0 auto;
+      padding:10px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .brand img{
+      width:140px;
+      height:34px;
+      object-fit:contain;
+    }
+    .top-links{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .top-links a{
+      font-size:14px;
+      text-decoration:none;
+      border-radius:999px;
+      padding:7px 14px;
+      border:1px solid transparent;
+      font-weight:500;
+    }
+    /* ghost Home */
+    .top-links .home-link{
+      color:#BA0303;
+      border-color:#d1e3ff;
+      background:#f5f8ff;
+    }
+    .top-links .home-link:hover{
+      background:#e6f0ff;
+    }
+    /* filled Schedule button */
+    .top-links .schedule-link{
+      background:#BA0303;
+      color:#fff;
+      box-shadow:0 6px 14px #dc9a9a;
+    }
+    .top-links .schedule-link:hover{
+      background:#BA0303;
+    }
+
+    main.container{
+      max-width:1100px;
+      margin:20px auto;
+      padding:0 18px;
+      flex:1; /* this pushes footer to bottom */
+      width:100%;
+      box-sizing:border-box;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:260px 1fr;
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      padding:14px;
+      border-radius:10px;
+      box-shadow:0 6px 18px rgba(2,6,23,0.04);
+    }
+    .labs-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .lab-btn{
+      padding:8px 10px;
+      border-radius:8px;
+      border:1px solid #eef2ff;
+      background:white;
+      cursor:pointer;
+      text-align:left;
+      font-size:14px;
+    }
+    .lab-btn.active{
+      background:#f3f4f6;
+      border-color:#dbeafe;
+    }
+
+    .room-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
+    }
+    .room-card{
+      background:white;
+      border-radius:8px;
+      box-shadow:0 6px 18px rgba(2,6,23,0.04);
+      overflow:hidden;
+    }
+    .room-card img{
+      width:100%;
+      height:140px;
+      object-fit:cover;
+    }
+    .room-card .info{
+      padding:12px;
+    }
+
+    label{
+      display:block;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    input,select{
+      width:100%;
+      padding:8px;
+      border-radius:8px;
+      border:1px solid #e6e9ef;
+      margin-top:6px;
+    }
+    .btn{
+      background:var(--accent);
+      color:#fff;
+      padding:10px 14px;
+      border-radius:8px;
+      border:none;
+      cursor:pointer;
+      margin-top:10px;
+      font-size:14px;
+      
+    }
+    .small{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* FOOTER same style as contactus.html but full-width & bottom */
+    footer{
+      background:#111;
+      color:#ccc;
+      padding:20px 16px;
+      margin-top:30px;
+    }
+    .footer-inner{
+      max-width:1100px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .footer-nav,
+    .footer-social{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:16px;
+      font-size:14px;
+      margin-bottom:6px;
+    }
+    footer a{
+      color:#ccc;
+      text-decoration:none;
+    }
+    footer a:hover{
+      color:#fff;
+      text-decoration:underline;
+    }
+    .footer-bottom{
+      margin-top:6px;
+      font-size:13px;
+      color:#999;
+      text-align:center;
+    }
+
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      .brand img{width:110px}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <a href="abc.html"><img src="logo.png" alt="ROOMDASH logo"></a>
+        <div>
+          <div style="font-weight:700">Lab Booking App</div>
+          <div class="small">Select area → Choose a room → Book</div>
+        </div>
+      </div>
+
+      <div class="top-links">
+        <a href="abc.html" class="home-link">Home</a>
+        <a href="schedule.html" class="schedule-link">Schedule</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <!-- left: areas list -->
+      <aside>
+        <div class="card">
+          <h4 style="margin:0 0 8px">Areas</h4>
+          <div class="labs-list" id="labsList"></div>
+        </div>
+        <!-- Booking filter card removed as requested -->
+      </aside>
+
+      <!-- right: booking content -->
+      <section>
+        <div class="card">
+          <h3 id="pageTitle">Select an area</h3>
+          <div class="small" id="pageSub">
+            Rooms and quick booking appear here after you select an area.
+          </div>
+
+          <div id="roomsWrap" style="margin-top:14px"></div>
+
+          <div id="quickPanel" style="margin-top:16px;display:none">
+            <h4 style="margin:0 0 8px">Quick Book</h4>
+
+            <label>Room</label>
+            <select id="qRoom"></select>
+
+            <div style="display:flex;gap:8px">
+              <div style="flex:1">
+                <label>Start</label>
+                <input id="qStart" type="time">
+              </div>
+              <div style="flex:1">
+                <label>End</label>
+                <input id="qEnd" type="time">
+              </div>
+            </div>
+
+            <label>Date</label>
+            <input id="qDate" type="date">
+
+            <label>Your name</label>
+            <input id="qName" placeholder="Full name">
+
+            <label>Email</label>
+            <input id="qEmail" placeholder="you@example.com">
+
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn" id="qBookBtn">Book room</button>
+              <button class="btn" id="qClearBtn" style="background:#fff;color:#0f172a;border:1px solid #e6e9ef">Clear</button>
+            </div>
+
+            <div id="qMessage" class="small" style="margin-top:8px;color:#b91c1c"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-nav">
+        <a href="abc.html">Home</a>
+        <a href="abc.html#features">Features</a>
+        <a href="Booking.html">Booking</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="contactus.html">Contact</a>
+      </div>
+
+      <div class="footer-social">
+        <a href="https://www.instagram.com/nmamit_nitte/" target="_blank">Instagram</a>
+        <a href="https://www.facebook.com/NMAMITsince1986/" target="_blank">Facebook</a>
+        <a href="https://x.com/nmamitnitte" target="_blank">Threads</a>
+        <a href="https://www.youtube.com/@NMAMInstituteofTechnology" target="_blank">Youtube</a>
+        <a href="https://www.linkedin.com/school/nmam-institute-of-technology/posts/?feedView=all" target="_blank">Linkedin</a>
+      </div>
+
+      <div class="footer-bottom">
+        © 2025 ROOMDASH • All Rights Reserved
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // fixed areas with different images per type
+    const labs = [
+      {
+        id:'labs',
+        name:'Labs',
+        rooms:[
+          {
+            id:'L1-R1',
+            name:'Computer Lab A',
+            img:'lab2.WEBP'
+          },
+          {
+            id:'L1-R2',
+            name:'Computer Lab B',
+            img:'lab3.jpg'
+          }
+        ]
+      },
+      {
+        id:'seminars',
+        name:'Seminar Halls',
+        rooms:[
+          {
+            id:'S1-R1',
+            name:'Seminar Hall 1',
+            img:'seminar2.jpg'
+          },
+          {
+            id:'S1-R2',
+            name:'Seminar Hall 2',
+            img:'seminar3.jpg'
+          }
+        ]
+      },
+      {
+        id:'classes',
+        name:'Classes',
+        rooms:[
+          {
+            id:'C1-R1',
+            name:'Classroom 110',
+            img:'class1.png'
+          },
+          {
+            id:'C1-R2',
+            name:'Classroom 111',
+            img:'class3.webp'
+          }
+        ]
+      }
+    ];
+
+    // storage key
+    const BOOK_KEY = 'labBooking_bookings_v1';
+
+    function loadBookings(){
+      try{
+        return JSON.parse(localStorage.getItem(BOOK_KEY) || '[]');
+      }catch(e){
+        return [];
+      }
+    }
+    function saveBookings(b){
+      localStorage.setItem(BOOK_KEY, JSON.stringify(b));
+    }
+
+    // render left list
+    const labsListEl = document.getElementById('labsList');
+    labs.forEach(l=>{
+      const btn = document.createElement('button');
+      btn.className = 'lab-btn';
+      btn.textContent = l.name;
+      btn.dataset.id = l.id;
+      btn.addEventListener('click', ()=>openArea(l.id));
+      labsListEl.appendChild(btn);
+    });
+
+    function getAreaById(id){
+      return labs.find(x=>x.id===id);
+    }
+
+    // query param helper
+    function getQueryParam(name){
+      const params = new URLSearchParams(location.search);
+      return params.get(name);
+    }
+
+    let currentArea = null;
+
+    function openArea(id){
+      currentArea = getAreaById(id);
+      if(!currentArea) return;
+
+      // highlight active
+      document.querySelectorAll('.lab-btn')
+        .forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+
+      document.getElementById('pageTitle').textContent = 'Booking — ' + currentArea.name;
+
+      // render rooms with their specific images
+      const wrap = document.getElementById('roomsWrap');
+      wrap.innerHTML = '<div class="room-grid">';
+      currentArea.rooms.forEach(r=>{
+        const img = r.img || 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80';
+        wrap.innerHTML += `
+          <div class="room-card">
+            <img src="${img}" alt="">
+            <div class="info">
+              <strong>${r.name}</strong>
+              <div class="small">${r.id}</div>
+            </div>
+          </div>`;
+      });
+      wrap.innerHTML += '</div>';
+
+      // show quick panel & populate room select
+      document.getElementById('quickPanel').style.display='block';
+      const qRoom = document.getElementById('qRoom');
+      qRoom.innerHTML = currentArea.rooms.map(r=>`<option value="${r.id}">${r.name}</option>`).join('');
+      document.getElementById('qMessage').textContent = '';
+    }
+
+    // decide which area to open on load:
+    // 1) if ?area= param exists and matches → open that
+    // 2) else → open 'labs' by default
+    const areaParam = getQueryParam('area');
+    if(areaParam){
+      const match = labs.find(l=>l.id === areaParam.toLowerCase());
+      if(match){
+        openArea(match.id);
+      }else{
+        openArea('labs'); // fallback
+      }
+    }else{
+      openArea('labs'); // default tab
+    }
+
+    // booking logic
+    document.getElementById('qBookBtn').addEventListener('click', ()=>{
+      if(!currentArea){
+        alert('Select an area first');
+        return;
+      }
+      const roomId = document.getElementById('qRoom').value;
+      const start = document.getElementById('qStart').value;
+      const end = document.getElementById('qEnd').value;
+      const date = document.getElementById('qDate').value;
+      const name = document.getElementById('qName').value.trim();
+      const email = document.getElementById('qEmail').value.trim().toLowerCase();
+
+      if(!roomId || !start || !end || !date || !name || !email){
+        alert('Please fill all fields');
+        return;
+      }
+
+      function t2m(t){
+        const [hh,mm] = t.split(':').map(Number);
+        return hh*60 + mm;
+      }
+      if(t2m(end) <= t2m(start)){
+        alert('End must be after start');
+        return;
+      }
+
+      const bookings = loadBookings();
+      const hasConflict = bookings.find(b =>
+        b.roomId===roomId &&
+        b.date===date &&
+        !(t2m(b.end) <= t2m(start) || t2m(end) <= t2m(b.start))
+      );
+
+      if(hasConflict){
+        document.getElementById('qMessage').style.color = '#b91c1c';
+        document.getElementById('qMessage').textContent =
+          'Conflict with existing booking ('+hasConflict.name+')';
+        return;
+      }
+
+      const newB = {
+        id: 'BK'+Math.random().toString(36).slice(2,7).toUpperCase(),
+        areaId: currentArea.id,
+        roomId,
+        date,
+        start,
+        end,
+        name,
+        email
+      };
+      bookings.push(newB);
+      saveBookings(bookings);
+
+      document.getElementById('qMessage').style.color = '#065f46';
+      document.getElementById('qMessage').textContent =
+        'Booking saved — opening Schedule...';
+
+      setTimeout(()=>{ window.location.href = 'schedule.html'; },700);
+    });
+
+    document.getElementById('qClearBtn').addEventListener('click', ()=>{
+      ['qStart','qEnd','qDate','qName','qEmail'].forEach(id=>{
+        document.getElementById(id).value='';
+      });
+      document.getElementById('qMessage').textContent='';
+    });
+  </script>
+</body>
+</html>

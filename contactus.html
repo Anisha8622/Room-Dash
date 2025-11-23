@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact Us • ROOMDASH</title>
+
+  <style>
+    body{
+      font-family:Arial,Helvetica,sans-serif;
+      margin:0;
+      background:#f7f9fb;
+      color:#0f172a;
+    }
+
+    /* HEADER */
+    header{
+      background:#fff;
+      border-bottom:1px solid #e6e9ef;
+      position:sticky;
+      top:0;
+      z-index:99;
+    }
+    .nav{
+      max-width:1100px;
+      margin:auto;
+      padding:10px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .nav-logo img{
+      height:45px;
+    }
+    /* Home button at right corner of header */
+    .home-btn{
+      text-decoration:none;
+      color:#fff;
+      background:#0D5AA7;
+      font-weight:600;
+      font-size:14px;
+      padding:8px 16px;
+      border-radius:8px;
+      display:inline-block;
+    }
+    .home-btn:hover{
+      background:#0b4b8a;
+    }
+
+    /* MAIN CARD */
+    .container{
+      max-width:900px;
+      margin:28px auto;
+      padding:18px;
+    }
+    .card{
+      background:#fff;
+      padding:18px;
+      border-radius:10px;
+      box-shadow:0 6px 18px rgba(2,6,23,0.04);
+    }
+
+    label{
+      display:block;
+      margin-top:10px;
+      color:#6b7280;
+    }
+
+    input,textarea,select{
+      width:100%;
+      padding:10px;
+      border-radius:8px;
+      border:1px solid #e6e9ef;
+      margin-top:6px;
+    }
+
+    .btn{
+      background:#0D5AA7;
+      color:#fff;
+      padding:10px 14px;
+      border-radius:8px;
+      border:none;
+      cursor:pointer;
+      margin-top:12px;
+    }
+
+    .small{font-size:13px;color:#6b7280}
+
+    /* ====== FOOTER (centered content) ====== */
+    footer{
+      background:#111;
+      color:#ccc;
+      padding:20px 16px;
+      margin-top:30px;
+    }
+    .footer-inner{
+      max-width:1100px;
+      margin:0 auto;
+      text-align:center;       /* center everything */
+    }
+
+    .footer-nav,
+    .footer-social{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;  /* center links horizontally */
+      gap:16px;
+      font-size:14px;
+      margin-bottom:6px;
+    }
+
+    footer a{
+      color:#ccc;
+      text-decoration:none;
+    }
+    footer a:hover{
+      color:white;
+      text-decoration:underline;
+    }
+
+    .footer-bottom{
+      margin-top:6px;
+      font-size:13px;
+      color:#999;
+      text-align:center;       /* center © text */
+    }
+
+    /* POPUP */
+    .modal{
+      position:fixed;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.45);
+      z-index:999;
+    }
+    .box{
+      background:#fff;
+      padding:18px;
+      border-radius:8px;
+      text-align:center;
+      max-width:420px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="nav">
+      <div class="nav-logo">
+        <a href="abc.html"><img src="logo.png" alt="ROOMDASH"></a>
+      </div>
+
+      <!-- Home button at right corner -->
+      <a href="abc.html" class="home-btn">Home</a>
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <main class="container">
+    <div class="card">
+      <h3>Contact Us</h3>
+      <p class="small">Tell us who you are and what you need — we'll get back to you soon.</p>
+
+      <label>Your name</label>
+      <input id="name" placeholder="Full name">
+
+      <label>Designation</label>
+      <input id="designation" placeholder="Student / Teacher / Admin">
+
+      <label>Email</label>
+      <input id="email" type="email" placeholder="you@example.com">
+
+      <label>Reason for contact</label>
+      <select id="reason">
+        <option value="booking">Booking issue</option>
+        <option value="access">Access / permissions</option>
+        <option value="feature">Feature request</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label>Message</label>
+      <textarea id="message" rows="6" placeholder="Describe the problem or request"></textarea>
+
+      <button class="btn" id="submitBtn">Submit</button>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <!-- nav links horizontally -->
+      <div class="footer-nav">
+        <a href="abc.html">Home</a>
+        <a href="abc.html#features">Features</a>
+        <a href="Booking.html">Booking</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="contactus.html">Contact</a>
+      </div>
+
+      <!-- social links horizontally below -->
+      <div class="footer-social">
+        <a href="https://www.instagram.com/nmamit_nitte/" target="_blank">Instagram</a>
+        <a href="https://www.facebook.com/NMAMITsince1986/" target="_blank">Facebook</a>
+        <a href="https://x.com/nmamitnitte" target="_blank">Threads</a>
+        <a href="https://www.youtube.com/@NMAMInstituteofTechnology" target="_blank">Youtube</a>
+        <a href="https://www.linkedin.com/school/nmam-institute-of-technology/posts/?feedView=all" target="_blank">Linkedin</a>
+      </div>
+
+      <!-- bottom text centered -->
+      <div class="footer-bottom">
+        © 2025 ROOMDASH • All Rights Reserved
+      </div>
+    </div>
+  </footer>
+
+  <!-- THANK YOU POPUP -->
+  <div id="thanksModal" class="modal">
+    <div class="box">
+      <h3>Thank you</h3>
+      <p>Thank you for contacting us. We'll update you soon.</p>
+      <div style="margin-top:12px">
+        <button class="btn" onclick="closeThanks()">Close</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  document.getElementById('submitBtn').addEventListener('click', ()=>{
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if(!name || !email || !message){
+      alert('Please fill name, email and message');
+      return;
+    }
+
+    const key = 'roomdash_contacts_v1';
+    const arr = JSON.parse(localStorage.getItem(key) || '[]');
+    arr.push({
+      id: 'CT'+Math.random().toString(36).slice(2,7).toUpperCase(),
+      name, email, message,
+      date: new Date().toISOString()
+    });
+    localStorage.setItem(key, JSON.stringify(arr));
+
+    document.getElementById('thanksModal').style.display = 'flex';
+  });
+
+  function closeThanks(){
+    document.getElementById('thanksModal').style.display='none';
+    window.location.href = 'abc.html';
+  }
+</script>
+</body>
+</html>
